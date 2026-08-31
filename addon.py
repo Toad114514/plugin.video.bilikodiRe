@@ -54,6 +54,7 @@ def index():
     return items
 
 @bili.route("/feed_home/<page>")
+# @bili.cached(TTL=3)
 def feed_home(page):
     items = []
     params = {"fresh_type": ts.getSet("home_fresh"), "fresh_idx": int(page), "ps": ts.getSet("ps.home", int)}
@@ -309,8 +310,24 @@ def fav_con(mlid, page):
     return items
 
 ########################
-# 搜索 Search
+# 番剧/剧集 media_bangumi/_ft
 
+@bili.route("/bangumi_info/<ids>/")
+def bangumi_info(ids):
+    items = []
+    
+    params = ts.dict2url({
+        "season_id": ids
+    })
+    url = "/pgc/view/web/season"
+    res = c.getjson(url, params=params)
+    if not isinstance(res, dict): return
+    
+    resu = res["result"]
+    return items
+
+########################
+# 搜索 Search
 def search_type(d, kw, typ):
     items = []
     
@@ -324,6 +341,7 @@ def search_type(d, kw, typ):
             items.append(c.get_viditem(x))
     
     if typ == "media_bangumi":
+        bili.set_content("movie")
         for nb in resu:
             label = ""
             

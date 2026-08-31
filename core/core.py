@@ -159,7 +159,7 @@ def get_viditem(v):
     
     # Kodi Metadata
     info = {
-         "mediatype": "movie",
+         "mediatype": "video",
          "duration": duration,
          "title": title,
          "plot": plot
@@ -176,6 +176,7 @@ def get_viditem(v):
        "label": title,
        "icon": pic,
        "fanart": pic,
+       "thumbnail": pic,
        "path": bili.url_for("bvplay", bv=bvid, cid=cid),
        "info": info,
        "context_menu": context,
@@ -211,7 +212,7 @@ def parse_plot(item):
         stat = item['stat']
         if 'view' in stat:
             state += f"{ts.n2num(stat['view'])}播放 | "
-        elif  'play' in stat:
+        elif 'play' in stat:
             state += f"{ts.n2num(stat['play'])}播放 | "
         if 'like' in stat:
             state += f"{ts.n2num(stat['like'])}点赞 | "
